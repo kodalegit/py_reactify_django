@@ -3,6 +3,7 @@ import subprocess
 from .install_npm_packages import install_npm_packages
 from .webpack_configurator import create_webpack_config
 from .template_tag_creator import create_template_tag
+from .install_app_django_settings import install_app_django_settings
 
 
 def configure_django_react_project(project_name, app_name, use_typescript=False):
@@ -14,6 +15,9 @@ def configure_django_react_project(project_name, app_name, use_typescript=False)
 
     # Create the Django app
     subprocess.run(["python", "manage.py", "startapp", app_name])
+
+    # Modify Django settings to include app name
+    install_app_django_settings(project_name, app_name)
 
     # Navigate to app directory
     os.chdir(app_name)
@@ -32,6 +36,5 @@ def configure_django_react_project(project_name, app_name, use_typescript=False)
             "import React from 'react';\nimport ReactDOM from 'react-dom';\nReactDOM.render(<h1>Hello, React!</h1>, document.getElementById('root'));"
         )
 
-    # Modify Django settings and templates if needed
     # Add custom react root template tag
     create_template_tag()
