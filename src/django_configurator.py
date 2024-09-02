@@ -3,7 +3,7 @@ import subprocess
 from .install_npm_packages import install_npm_packages
 from .webpack_configurator import create_webpack_config
 from .template_tag_creator import create_template_tag
-from .install_app_django_settings import install_app_django_settings
+from .install_app_django_settings import django_settings_install_app
 
 
 def configure_django_react_project(project_name, app_name, use_typescript=False):
@@ -17,7 +17,7 @@ def configure_django_react_project(project_name, app_name, use_typescript=False)
     subprocess.run(["python", "manage.py", "startapp", app_name])
 
     # Modify Django settings to include app name
-    install_app_django_settings(project_name, app_name)
+    django_settings_install_app(project_name, app_name)
 
     # Navigate to app directory
     os.chdir(app_name)

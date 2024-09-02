@@ -1,7 +1,7 @@
 import os
 
 
-def install_app_django_settings(project_name, app_name):
+def django_settings_install_app(project_name, app_name):
     settings_path = os.path.join(project_name, "settings.py")
 
     if not os.path.isfile(settings_path):
