@@ -35,7 +35,3 @@ def configure_django_react_project(project_name, app_name, use_typescript=False)
     # Modify Django settings and templates if needed
     # Add custom react root template tag
     create_template_tag()
-
-
-if __name__ == "__main__":
-    configure_django_react_project("myproject", use_typescript=True)

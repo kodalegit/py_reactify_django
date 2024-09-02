@@ -47,7 +47,3 @@ def create_webpack_config(typescript=False):
 
     with open("webpack.config.js", "w") as f:
         f.write(config)
-
-
-if __name__ == "__main__":
-    create_webpack_config(typescript=True)
