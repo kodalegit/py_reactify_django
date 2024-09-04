@@ -5,9 +5,13 @@ from .install_npm_packages import install_npm_packages
 from .webpack_configurator import create_webpack_config
 from .template_tag_creator import create_template_tag
 from .install_app_django_settings import django_settings_install_app
+from .check_and_install_django import check_and_install_django
 
 
 def configure_django_react_project(project_name, app_name, use_typescript=False):
+    # Check if django exists and install if not
+    check_and_install_django()
+
     # Create Django project
     subprocess.run(["django-admin", "startproject", project_name])
 
