@@ -15,7 +15,7 @@ def configure_django_react_project(project_name, app_name, use_typescript=False)
     os.chdir(project_name)
 
     # Create the Django app
-    subprocess.run([sys.executable, "manage.py", "startapp", app_name])
+    subprocess.run(["django-admin", "startapp", app_name])
 
     # Modify Django settings to include app name
     django_settings_install_app(project_name, app_name)
