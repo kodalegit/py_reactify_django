@@ -32,4 +32,4 @@ def install_npm_packages(use_typescript):
         subprocess.run(["npm", "install"] + packages, check=True)
 
     except subprocess.CalledProcessError as e:
-        print(f"An error occurred: {e}")
+        print(f"An error occurred installing npm packages: {e}")

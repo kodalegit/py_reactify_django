@@ -45,5 +45,19 @@ def create_webpack_config(typescript=False):
         ),
     )
 
-    with open("webpack.config.js", "w") as f:
-        f.write(config)
+    try:
+        # Ensure the current directory exists and is writable
+        if not os.access(os.getcwd(), os.W_OK):
+            raise PermissionError("Write permission denied for the current directory.")
+
+        # Write the Webpack config file
+        with open("webpack.config.js", "w") as f:
+            f.write(config)
+        print("Successfully created webpack.config.js")
+
+    except PermissionError as pe:
+        print(f"Error: {pe}")
+    except OSError as e:
+        print(f"OS error: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")

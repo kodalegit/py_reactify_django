@@ -1,45 +1,49 @@
 import os
 import subprocess
 import sys
-from .install_npm_packages import install_npm_packages
-from .webpack_configurator import create_webpack_config
 from .template_tag_creator import create_template_tag
-from .install_app_django_settings import django_settings_install_app
+from .modify_django_settings import add_app_django_settings
 from .check_and_install_django import check_and_install_django
 
 
-def configure_django_react_project(project_name, app_name, use_typescript=False):
+def configure_django(project_name, app_name, use_typescript=False):
     # Check if django exists and install if not
     check_and_install_django()
 
-    # Create Django project
-    subprocess.run(["django-admin", "startproject", project_name])
+    try:
+        # Create Django project
+        subprocess.run(["django-admin", "startproject", project_name], check=True)
+    except FileNotFoundError:
+        # Handle "command not found" error
+        print("Error: 'django-admin' command not found.")
+        print("Ensure Django is installed and added to your system's PATH.")
+        print("You can try running 'python -m django' instead.")
+        sys.exit(1)
+    except subprocess.CalledProcessError as e:
+        # Handle other errors in running django-admin (permissions, etc.)
+        if "permission denied" in str(e):
+            print("Error: Permission denied while trying to run 'django-admin'.")
+            print("On macOS or Unix-based systems, you might need to run:")
+            print("  sudo chmod +x $(which django-admin)")
+        else:
+            print(f"An error occurred while creating the Django project: {e}")
+        sys.exit(1)
 
     # Navigate into the project directory
     os.chdir(project_name)
 
-    # Create the Django app
-    subprocess.run(["django-admin", "startapp", app_name])
+    try:
+        # Create Django app
+        subprocess.run(["django-admin", "startapp", app_name], check=True)
+    except FileNotFoundError:
+        print("Error: 'django-admin' command not found.")
+        sys.exit(1)
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred while creating the Django app: {e}")
+        sys.exit(1)
 
     # Modify Django settings to include app name
-    django_settings_install_app(project_name, app_name)
-
-    # Navigate to app directory
-    os.chdir(app_name)
-
-    # Initialize npm and install packages
-    install_npm_packages(use_typescript)
-
-    # Create Webpack configuration
-    create_webpack_config(typescript=use_typescript)
-
-    # Create React entry point
-    os.makedirs("src", exist_ok=True)
-    entry_file = "index.tsx" if use_typescript else "index.jsx"
-    with open(f"src/{entry_file}", "w") as f:
-        f.write(
-            "import React from 'react';\nimport ReactDOM from 'react-dom';\nReactDOM.render(<h1>Hello, React!</h1>, document.getElementById('root'));"
-        )
+    add_app_django_settings(project_name, app_name)
 
     # Add custom react root template tag
     create_template_tag()

@@ -1,7 +1,6 @@
 import click
-import subprocess
-import os
-from .django_configurator import configure_django_react_project
+from .django_configurator import configure_django
+from .react_configurator import configure_react
 
 
 @click.command()
@@ -21,7 +20,8 @@ from .django_configurator import configure_django_react_project
     help="Use TypeScript for React (default is JavaScript).",
 )
 def setup_django_react(project_name, app_name, use_typescript):
-    configure_django_react_project(project_name, app_name, use_typescript)
+    configure_django(project_name, app_name, use_typescript)
+    configure_react(app_name, use_typescript)
     print(f"Django project '{project_name}' configured with React and Webpack.")
 
 
