@@ -1,12 +1,12 @@
 import os
 import subprocess
 import sys
-from .template_tag_creator import create_template_tag
-from .modify_django_settings import add_app_django_settings
-from .check_and_install_django import check_and_install_django
+from .django.template_tag_creator import create_template_tag
+from .django.modify_django_settings import add_app_django_settings
+from .django.check_and_install_django import check_and_install_django
 
 
-def configure_django(project_name, app_name, use_typescript=False):
+def configure_django(project_name, app_name):
     # Check if django exists and install if not
     check_and_install_django()
 

@@ -24,6 +24,9 @@ def install_npm_packages(use_typescript):
             "@babel/core",
             "@babel/preset-env",
             "@babel/preset-react",
+            "@pmmmwh/react-refresh-webpack-plugin",
+            "react-refresh",
+            "cross-env",
         ]
 
         # If TypeScript is used, add TypeScript-related packages

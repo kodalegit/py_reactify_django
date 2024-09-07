@@ -1,6 +1,5 @@
 import os
-from .install_npm_packages import install_npm_packages
-from .webpack_configurator import create_webpack_config
+from .react.install_npm_packages import install_npm_packages
 
 
 def configure_react(app_name, use_typescript):
@@ -9,9 +8,6 @@ def configure_react(app_name, use_typescript):
 
     # Initialize npm and install packages
     install_npm_packages(use_typescript)
-
-    # Create Webpack configuration
-    create_webpack_config(typescript=use_typescript)
 
     # Create React entry point
     os.makedirs("src", exist_ok=True)

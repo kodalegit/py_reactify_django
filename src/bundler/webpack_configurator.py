@@ -1,12 +1,20 @@
 import os
 
 
+import os
+
+
 def create_webpack_config(typescript=False):
     config = """
     const path = require('path');
+    const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+    const webpack = require('webpack');
+
+    const isDevelopment = process.env.NODE_ENV !== 'production';
 
     module.exports = {{
-        entry: './src/index.{}',
+        mode: isDevelopment ? 'development' : 'production',
+        entry: './src/index.{}',  // Adjust entry point for TS/JS
         output: {{
             path: path.resolve(__dirname, 'dist'),
             filename: 'bundle.js',
@@ -16,22 +24,40 @@ def create_webpack_config(typescript=False):
                 {{
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
-                    use: ['babel-loader'],
+                    use: {{
+                        loader: 'babel-loader',
+                        options: {{
+                            plugins: [
+                                isDevelopment && require.resolve('react-refresh/babel')
+                            ].filter(Boolean),
+                        }},
+                    }},
                 }},
                 {}
             ],
         }},
         resolve: {{
-            extensions: ['.js', '.jsx', '.json'],
+            extensions: ['.js', '.jsx', '.json'{}], // Add .ts, .tsx for TypeScript
         }},
+        plugins: [
+            isDevelopment && new webpack.HotModuleReplacementPlugin(),
+            isDevelopment && new ReactRefreshWebpackPlugin(),
+        ].filter(Boolean),
         devServer: {{
-            contentBase: path.join(__dirname, 'dist'),
-            compress: true,
+            static: {
+                directory: path.join(__dirname, 'dist'),
+            },
+            hot: true, // Enable hot module reloading
             port: 9000,
+            compress: true,
+            client: {
+                logging: "error",
+                overlay: true,
+            },
         }},
     }};
     """.format(
-        "tsx" if typescript else "jsx",
+        "tsx" if typescript else "jsx",  # Adjust entry for TS or JS
         (
             """
         {{
@@ -43,6 +69,7 @@ def create_webpack_config(typescript=False):
             if typescript
             else ""
         ),
+        ", '.ts', '.tsx'" if typescript else "",
     )
 
     try:
