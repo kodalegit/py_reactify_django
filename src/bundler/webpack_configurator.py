@@ -1,9 +1,6 @@
 import os
 
 
-import os
-
-
 def create_webpack_config(typescript=False):
     config = """
     const path = require('path');
