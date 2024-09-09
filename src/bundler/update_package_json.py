@@ -16,7 +16,7 @@ def update_package_json_scripts():
 
         # Update the scripts section
         data["scripts"] = {
-            "start": "webpack serve --hot",
+            "start": "webpack serve",
             "build": "cross-env NODE_ENV=production webpack",
         }
 
