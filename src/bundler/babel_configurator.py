@@ -21,8 +21,6 @@ def create_babel_config(use_typescript=False):
           // Add @babel/preset-typescript conditionally if use_typescript is true
           {} 
         ],
-        // Applies the react-refresh Babel plugin on non-production modes only
-        ...(!isProduction && {{ plugins: ["react-refresh/babel"] }}),
       }};
     };
     """.format(
