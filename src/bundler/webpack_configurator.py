@@ -51,6 +51,9 @@ def create_webpack_config(typescript=False):
                 logging: "error",
                 overlay: true,
             },
+            devMiddleware: {
+                writeToDisk: true,
+            }
         }},
     }};
     """.format(
