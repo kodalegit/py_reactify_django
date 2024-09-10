@@ -4,9 +4,9 @@ import os
 def write_tailwind_css():
     # Define the Tailwind directives for the CSS file
     tailwind_css = """@tailwind base;
-    @tailwind components;
-    @tailwind utilities;
-    """
+@tailwind components;
+@tailwind utilities;
+"""
 
     # Path to index css file
     css_file_path = os.path.join("src", "index.css")
