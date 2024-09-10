@@ -30,11 +30,19 @@ def create_webpack_config(typescript=False):
                         }},
                     }},
                 }},
+                {{
+                    test: /\.css$/,  // Apply this rule to CSS files
+                    use: [
+                    'style-loader',  // Inject CSS into the DOM
+                    'css-loader',    // Resolves @import and url() paths
+                    'postcss-loader' // Process Tailwind and Autoprefixer via PostCSS
+                    ],
+                }},
                 {}
             ],
         }},
         resolve: {{
-            extensions: ['.js', '.jsx', '.json'{}], // Add .ts, .tsx for TypeScript
+            extensions: ['.js', '.jsx', '.json'{}],
         }},
         plugins: [
             isDevelopment && new webpack.HotModuleReplacementPlugin(),

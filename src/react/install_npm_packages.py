@@ -26,6 +26,9 @@ def install_npm_packages(use_typescript, use_tailwind):
             "@babel/preset-react",
             "@pmmmwh/react-refresh-webpack-plugin",
             "react-refresh",
+            "style-loader",
+            "css-loader",
+            "postcss-loader",
         ]
 
         # If TypeScript is used, add TypeScript-related packages
