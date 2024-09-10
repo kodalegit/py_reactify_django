@@ -14,5 +14,5 @@ def configure_react(app_name, use_typescript, use_tailwind):
     entry_file = "index.tsx" if use_typescript else "index.jsx"
     with open(f"src/{entry_file}", "w") as f:
         f.write(
-            "import React from 'react';\nimport ReactDOM from 'react-dom';\nimport './styles.css';\nReactDOM.render(<h1>Hello, React!</h1>, document.getElementById('root'));"
+            "import React from 'react';\nimport ReactDOM from 'react-dom';\nimport './index.css';\nReactDOM.render(<h1>Hello, React!</h1>, document.getElementById('root'));"
         )

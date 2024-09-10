@@ -4,6 +4,7 @@ import sys
 from .django.template_tag_creator import create_template_tag
 from .django.modify_django_settings import add_app_django_settings
 from .django.check_and_install_django import check_and_install_django
+from .django.create_gitignore import create_gitignore
 
 
 def configure_django(project_name, app_name):
@@ -47,3 +48,5 @@ def configure_django(project_name, app_name):
 
     # Add custom react root template tag
     create_template_tag()
+
+    create_gitignore()

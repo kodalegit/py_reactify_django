@@ -34,7 +34,7 @@ def setup_django_react(project_name, app_name, use_typescript, use_tailwind):
     configure_typescript(use_typescript)
 
     if use_tailwind:
-        configure_tailwind(use_typescript, app_name)
+        configure_tailwind(use_typescript)
 
     print(f"Django project '{project_name}' configured with React and Webpack.")
 
