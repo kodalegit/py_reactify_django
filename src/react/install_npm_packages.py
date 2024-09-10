@@ -4,7 +4,7 @@ import subprocess
 import subprocess
 
 
-def install_npm_packages(use_typescript):
+def install_npm_packages(use_typescript, use_tailwind):
     try:
         # Initialize npm in the app directory
         subprocess.run(["npm", "init", "-y"], check=True)
@@ -43,6 +43,8 @@ def install_npm_packages(use_typescript):
                     "@babel/preset-typescript",
                 ]
             )
+        if use_tailwind:
+            dev_dependencies.extend(["tailwindcss", "postcss", "autoprefixer"])
 
         # Install regular dependencies
         subprocess.run(["npm", "install"] + dependencies, check=True)
