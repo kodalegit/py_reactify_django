@@ -1,9 +1,6 @@
 import subprocess
 
 
-import subprocess
-
-
 def install_npm_packages(use_typescript, use_tailwind):
     try:
         # Initialize npm in the app directory
