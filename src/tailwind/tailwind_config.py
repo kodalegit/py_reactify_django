@@ -1,6 +1,7 @@
 def create_tailwind_config(use_typescript):
     file_types = "ts,tsx" if use_typescript else "js,jsx"
-    tailwind_config = f"""/** @type {{import('tailwindcss').Config}} */
+    tailwind_config = f"""\
+/** @type {{import('tailwindcss').Config}} */
 module.exports = {{
 content: ["./src/**/*.{{{file_types}}}"],
 theme: {{
