@@ -30,15 +30,11 @@ def install_npm_packages(use_typescript, use_tailwind):
 
         # If TypeScript is used, add TypeScript-related packages
         if use_typescript:
-            dependencies.extend(
+            dev_dependencies.extend(
                 [
                     "typescript",
                     "@types/react",
                     "@types/react-dom",
-                ]
-            )
-            dev_dependencies.extend(
-                [
                     "ts-loader",
                     "@babel/preset-typescript",
                 ]
