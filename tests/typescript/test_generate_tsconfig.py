@@ -33,7 +33,7 @@ class TestGenerateTsconfig(unittest.TestCase):
                 "paths": {"@/*": ["src/*"]},
             },
             "include": ["**/*.ts", "**/*.tsx"],
-            "exclude": ["node_modules", "dist"],
+            "exclude": ["node_modules"],
         }
 
         # Check that open was called with the correct parameters

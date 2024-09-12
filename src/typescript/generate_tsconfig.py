@@ -23,7 +23,7 @@ def generate_tsconfig():
             "paths": {"@/*": ["src/*"]},
         },
         "include": ["**/*.ts", "**/*.tsx"],
-        "exclude": ["node_modules", "dist"],
+        "exclude": ["node_modules"],
     }
 
     # Write the tsconfig to a file
