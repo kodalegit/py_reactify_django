@@ -8,7 +8,9 @@ class TestAddAppDjangoSettings(unittest.TestCase):
 
     @mock.patch("os.path.isfile")
     @mock.patch(
-        "builtins.open", new_callable=mock.mock_open, read_data="INSTALLED_APPS = []\n"
+        "builtins.open",
+        new_callable=mock.mock_open,
+        read_data="INSTALLED_APPS = [\n]\n",
     )
     def test_add_app_to_installed_apps(self, mock_open, mock_isfile):
         # Setup mocks
@@ -27,8 +29,9 @@ class TestAddAppDjangoSettings(unittest.TestCase):
         handle = mock_open()
         written_content = handle.write.call_args_list
         expected_content = [
-            mock.call("INSTALLED_APPS = []\n"),
+            mock.call("INSTALLED_APPS = [\n"),
             mock.call("    'test_app',\n"),
+            mock.call("]\n"),
         ]
         self.assertEqual(written_content, expected_content)
 

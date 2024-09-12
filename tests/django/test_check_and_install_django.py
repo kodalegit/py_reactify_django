@@ -20,7 +20,10 @@ class TestCheckAndInstallDjango(unittest.TestCase):
     @mock.patch("src.django.check_and_install_django.subprocess.run")
     def test_django_not_installed(self, mock_subprocess_run):
         # Simulate that Django is not installed
-        mock_subprocess_run.side_effect = subprocess.CalledProcessError(1, "django")
+        mock_subprocess_run.side_effect = [
+            subprocess.CalledProcessError(1, "django"),
+            None,
+        ]
 
         with mock.patch("builtins.print") as mocked_print:
             check_and_install_django()
