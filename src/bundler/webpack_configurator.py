@@ -31,11 +31,6 @@ def create_webpack_config(typescript=False):
                     }},
                 }},
                 {{
-                    test: /\.tsx?$/,   
-                    use: 'ts-loader',
-                    exclude: /node_modules/,
-                }},
-                {{
                     test: /\.css$/,  // Apply this rule to CSS files
                     use: [
                     'style-loader',  // Inject CSS into the DOM
