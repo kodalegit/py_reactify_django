@@ -30,7 +30,7 @@ from .tailwind_configurator import configure_tailwind
 def setup_django_react(project_name, app_name, use_typescript, use_tailwind):
     configure_django(project_name, app_name, use_typescript)
     configure_react(app_name, use_typescript, use_tailwind)
-    configure_bundling(use_typescript)
+    configure_bundling(app_name, use_typescript)
     configure_typescript(use_typescript)
 
     if use_tailwind:

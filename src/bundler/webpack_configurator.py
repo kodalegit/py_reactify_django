@@ -1,7 +1,7 @@
 import os
 
 
-def create_webpack_config(typescript=False):
+def create_webpack_config(app_name, use_typescript):
     config = """
     const path = require('path');
     const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
@@ -13,7 +13,7 @@ def create_webpack_config(typescript=False):
         mode: isDevelopment ? 'development' : 'production',
         entry: './src/index.{}',  // Adjust entry point for TS/JS
         output: {{
-            path: path.resolve(__dirname, 'dist'),
+            path: path.resolve(__dirname, '{}'),
             filename: 'bundle.js',
         }},
         module: {{
@@ -50,10 +50,10 @@ def create_webpack_config(typescript=False):
         ].filter(Boolean),
         devServer: {{
             static: {
-                directory: path.join(__dirname, 'dist'),
+                directory: path.join(__dirname, '{}'),
             },
             hot: true, // Enable hot module reloading
-            port: 9000,
+            port: 3000,
             compress: true,
             client: {
                 logging: "error",
@@ -65,7 +65,8 @@ def create_webpack_config(typescript=False):
         }},
     }};
     """.format(
-        "tsx" if typescript else "jsx",  # Adjust entry for TS or JS
+        "tsx" if use_typescript else "jsx",
+        f"static/{app_name}/js",
         (
             """
         {{
@@ -74,10 +75,11 @@ def create_webpack_config(typescript=False):
             exclude: /node_modules/,
         }},
         """
-            if typescript
+            if use_typescript
             else ""
         ),
-        ", '.ts', '.tsx'" if typescript else "",
+        ", '.ts', '.tsx'" if use_typescript else "",
+        f"static/{app_name}/js",
     )
 
     try:
