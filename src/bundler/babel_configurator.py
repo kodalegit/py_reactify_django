@@ -19,7 +19,7 @@ def create_babel_config(use_typescript=False):
             {{ development: !isProduction, runtime: "automatic" }},
           ],
           // Add @babel/preset-typescript conditionally if use_typescript is true
-          {} 
+          {}
         ],
       }};
     };

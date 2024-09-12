@@ -2,7 +2,7 @@ import os
 
 
 def create_webpack_config(app_name, use_typescript):
-    config = """
+    config = """\
     const path = require('path');
     const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
     const webpack = require('webpack');
@@ -11,15 +11,16 @@ def create_webpack_config(app_name, use_typescript):
 
     module.exports = {{
         mode: isDevelopment ? 'development' : 'production',
-        entry: './src/index.{}',  // Adjust entry point for TS/JS
+        entry: './src/index.{entry_ext}',  // Adjust entry point for TS/JS
         output: {{
-            path: path.resolve(__dirname, '{}'),
+            path: path.resolve(__dirname, '{output_path}'),
             filename: 'bundle.js',
         }},
         module: {{
             rules: [
                 {{
                     test: /\.(js|jsx)$/,
+
                     exclude: /node_modules/,
                     use: {{
                         loader: 'babel-loader',
@@ -33,53 +34,52 @@ def create_webpack_config(app_name, use_typescript):
                 {{
                     test: /\.css$/,  // Apply this rule to CSS files
                     use: [
-                    'style-loader',  // Inject CSS into the DOM
-                    'css-loader',    // Resolves @import and url() paths
-                    'postcss-loader' // Process Tailwind and Autoprefixer via PostCSS
+                        'style-loader',  // Inject CSS into the DOM
+                        'css-loader',    // Resolves @import and url() paths
+                        'postcss-loader' // Process Tailwind and Autoprefixer via PostCSS
                     ],
                 }},
-                {}
+                {typescript_loader}
             ],
         }},
         resolve: {{
-            extensions: ['.js', '.jsx', '.json'{}],
+            extensions: ['.js', '.jsx', '.json'{extensions}],
         }},
         plugins: [
             isDevelopment && new webpack.HotModuleReplacementPlugin(),
             isDevelopment && new ReactRefreshWebpackPlugin(),
         ].filter(Boolean),
         devServer: {{
-            static: {
-                directory: path.join(__dirname, '{}'),
-            },
+            static: {{
+                directory: path.join(__dirname, '{output_path}'),
+            }},
             hot: true, // Enable hot module reloading
             port: 3000,
             compress: true,
-            client: {
+            client: {{
                 logging: "error",
                 overlay: true,
-            },
-            devMiddleware: {
+            }},
+            devMiddleware: {{
                 writeToDisk: true,
-            }
+            }}
         }},
     }};
     """.format(
-        "tsx" if use_typescript else "jsx",
-        f"static/{app_name}/js",
-        (
+        entry_ext="tsx" if use_typescript else "jsx",
+        output_path=f"static/{app_name}/js",
+        typescript_loader=(
             """
-        {{
-            test: /\.tsx?$/,
-            use: 'ts-loader',
-            exclude: /node_modules/,
-        }},
-        """
+            {{
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            }},
+            """
             if use_typescript
             else ""
         ),
-        ", '.ts', '.tsx'" if use_typescript else "",
-        f"static/{app_name}/js",
+        extensions=", '.ts', '.tsx'" if use_typescript else "",
     )
 
     try:
@@ -94,7 +94,10 @@ def create_webpack_config(app_name, use_typescript):
 
     except PermissionError as pe:
         print(f"Error: {pe}")
+        raise
     except OSError as e:
         print(f"OS error: {e}")
+        raise
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
+        raise
