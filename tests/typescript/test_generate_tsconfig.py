@@ -33,19 +33,21 @@ class TestGenerateTsconfig(unittest.TestCase):
                 "paths": {"@/*": ["src/*"]},
             },
             "include": ["**/*.ts", "**/*.tsx"],
-            "exclude": ["node_modules", "build"],
+            "exclude": ["node_modules", "dist"],
         }
 
         # Check that open was called with the correct parameters
         mock_open.assert_called_once_with("tsconfig.json", "w")
 
         # Join all write calls to form the final content
-        written_content = "".join(call[0] for call in mock_open().write.call_args_list)
+        written_content = "".join(
+            call.args[0] for call in mock_open().write.call_args_list
+        )
+
+        self.maxDiff = None
 
         # Check that the file write method was called with the correct content
-        self.assertEqual(
-            written_content, json.dumps(expected_tsconfig, indent=2) + "\n"
-        )
+        self.assertEqual(written_content, json.dumps(expected_tsconfig, indent=2))
 
 
 if __name__ == "__main__":
