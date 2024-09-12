@@ -51,4 +51,7 @@ def install_npm_packages(use_typescript, use_tailwind):
         print("NPM packages installed successfully.")
 
     except subprocess.CalledProcessError as e:
-        print(f"An error occurred while installing npm packages: {e}")
+        print(
+            f"An error occurred while installing npm packages: {e}. Make sure Node is installed and try again."
+        )
+        raise

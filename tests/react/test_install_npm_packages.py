@@ -50,10 +50,10 @@ class TestInstallNpmPackages(unittest.TestCase):
 
         mock_subprocess_run.assert_has_calls(calls)
 
-    @mock.patch(
-        "subprocess.run", side_effect=subprocess.CalledProcessError(1, "npm install")
-    )
+    @mock.patch("subprocess.run")
     def test_install_npm_packages_failure(self, mock_subprocess_run):
+        mock_subprocess_run.side_effect = subprocess.CalledProcessError(1, "npm")
+
         # Test the case where subprocess.run raises CalledProcessError
         with self.assertRaises(subprocess.CalledProcessError):
             install_npm_packages(use_typescript=False, use_tailwind=False)
