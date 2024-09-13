@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import mock_open, patch
+from unittest.mock import mock_open, patch, call
 import json
 from src.bundler.update_package_json import update_package_json_scripts
 
@@ -15,14 +15,27 @@ class TestUpdatePackageJsonScripts(unittest.TestCase):
         # Check if the file was opened in write mode
         mock_open.assert_called_with("package.json", "w")
 
-        # Check if the file content written matches the expected updated JSON
-        expected_data = {
-            "scripts": {
-                "start": "webpack serve",
-                "build": "webpack --mode production",
-            }
-        }
-        mock_open().write.assert_called_once_with(json.dumps(expected_data, indent=2))
+        # Define the expected series of write calls for the pretty-printed JSON
+        expected_calls = [
+            call("{"),
+            call("\n  "),
+            call('"scripts"'),
+            call(": "),
+            call("{"),
+            call("\n    "),
+            call('"start"'),
+            call(": "),
+            call('"webpack serve"'),
+            call(",\n    "),
+            call('"build"'),
+            call(": "),
+            call('"webpack --mode production"'),
+            call("\n  "),
+            call("}"),
+            call("\n"),
+            call("}"),
+        ]
+        mock_open().write.assert_has_calls(expected_calls, any_order=False)
 
     @patch("os.path.isfile", return_value=False)
     def test_file_not_found(self, mock_isfile):
@@ -35,10 +48,9 @@ class TestUpdatePackageJsonScripts(unittest.TestCase):
         with self.assertRaises(json.JSONDecodeError):
             update_package_json_scripts()
 
-    @patch("builtins.open", new_callable=mock_open, read_data="{}")
     @patch("os.path.isfile", return_value=True)
     @patch("builtins.open", side_effect=IOError("File I/O error"))
-    def test_io_error(self, mock_open, mock_isfile):
+    def test_io_error(self, mock_open_side_effect, mock_isfile):
         with self.assertRaises(IOError):
             update_package_json_scripts()
 

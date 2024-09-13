@@ -26,7 +26,7 @@ class TestCreateWebpackConfig(unittest.TestCase):
         # Define the expected configuration
         expected_entry = "./src/index.tsx"
         expected_output_path = f"static/{app_name}/js"
-        expected_loader = """
+        expected_loader = """\
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
@@ -35,72 +35,71 @@ class TestCreateWebpackConfig(unittest.TestCase):
         """
         expected_extensions = ", '.ts', '.tsx'"
         expected_config = f"""\
+const path = require('path');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const webpack = require('webpack');
 
-    const path = require('path');
-    const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-    const webpack = require('webpack');
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
-    const isDevelopment = process.env.NODE_ENV !== 'production';
-
-    module.exports = {{
-        mode: isDevelopment ? 'development' : 'production',
-        entry: '{expected_entry}',  // Adjust entry point for TS/JS
-        output: {{
-            path: path.resolve(__dirname, '{expected_output_path}'),
-            filename: 'bundle.js',
-        }},
-        module: {{
-            rules: [
-                {{
-                    test: /\.(js|jsx)$/,
-                    exclude: /node_modules/,
-                    use: {{
-                        loader: 'babel-loader',
-                        options: {{
-                            plugins: [
-                                isDevelopment && require.resolve('react-refresh/babel')
-                            ].filter(Boolean),
-                        }},
+module.exports = {{
+    mode: isDevelopment ? 'development' : 'production',
+    entry: '{expected_entry}',  // Adjust entry point for TS/JS
+    output: {{
+        path: path.resolve(__dirname, '{expected_output_path}'),
+        filename: 'bundle.js',
+    }},
+    module: {{
+        rules: [
+            {{
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: {{
+                    loader: 'babel-loader',
+                    options: {{
+                        plugins: [
+                            isDevelopment && require.resolve('react-refresh/babel')
+                        ].filter(Boolean),
                     }},
                 }},
-                {{
-                    test: /\.css$/,  // Apply this rule to CSS files
-                    use: [
-                        'style-loader',  // Inject CSS into the DOM
-                        'css-loader',    // Resolves @import and url() paths
-                        'postcss-loader' // Process Tailwind and Autoprefixer via PostCSS
-                    ],
-                }},
-                {expected_loader}
-            ],
-        }},
-        resolve: {{
-            extensions: ['.js', '.jsx', '.json'{expected_extensions}],
-        }},
-        plugins: [
-            isDevelopment && new webpack.HotModuleReplacementPlugin(),
-            isDevelopment && new ReactRefreshWebpackPlugin(),
-        ].filter(Boolean),
-        devServer: {{
-            static: {{
-                directory: path.join(__dirname, '{expected_output_path}'),
             }},
-            hot: true, // Enable hot module reloading
-            port: 3000,
-            compress: true,
-            client: {{
-                logging: "error",
-                overlay: true,
+            {{
+                test: /\.css$/,  // Apply this rule to CSS files
+                use: [
+                    'style-loader',  // Inject CSS into the DOM
+                    'css-loader',    // Resolves @import and url() paths
+                    'postcss-loader' // Process Tailwind and Autoprefixer via PostCSS
+                ],
             }},
-            devMiddleware: {{
-                writeToDisk: true,
-            }}
+            {expected_loader}
+        ],
+    }},
+    resolve: {{
+        extensions: ['.js', '.jsx', '.json'{expected_extensions}],
+    }},
+    plugins: [
+        isDevelopment && new webpack.HotModuleReplacementPlugin(),
+        isDevelopment && new ReactRefreshWebpackPlugin(),
+    ].filter(Boolean),
+    devServer: {{
+        static: {{
+            directory: path.join(__dirname, '{expected_output_path}'),
         }},
-    }};
-    """
-
+        hot: true, // Enable hot module reloading
+        port: 3000,
+        compress: true,
+        client: {{
+            logging: "error",
+            overlay: true,
+        }},
+        devMiddleware: {{
+            writeToDisk: true,
+        }}
+    }},
+}};
+"""
+        self.maxDiff = None
         # Check that the correct content was written
-        written_content = handle.write.call_args_list
+        written_content = "".join(call.args[0] for call in handle.write.call_args_list)
         expected_content = [mock.call(expected_config)]
         self.assertEqual(written_content, expected_content)
 

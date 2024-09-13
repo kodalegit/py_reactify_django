@@ -3,27 +3,26 @@ import os
 
 def create_babel_config(use_typescript=False):
     # Babel config template
-    config = """
-    module.exports = (api) => {
-      // This caches the Babel config
-      api.cache.using(() => process.env.NODE_ENV);
+    config = """\
+module.exports = (api) => {{
+  // This caches the Babel config
+  api.cache.using(() => process.env.NODE_ENV);
 
-      const isProduction = api.env("production");
+  const isProduction = api.env("production");
 
-      return {{
-        presets: [
-          "@babel/preset-env",
-          // Enable development transform of React with new automatic runtime
-          [
-            "@babel/preset-react",
-            {{ development: !isProduction, runtime: "automatic" }},
-          ],
-          // Add @babel/preset-typescript conditionally if use_typescript is true
-          {}
-        ],
-      }};
-    };
-    """.format(
+  return {{
+    presets: [
+      "@babel/preset-env",
+      // Enable development transform of React with new automatic runtime
+      [
+        "@babel/preset-react",
+        {{ development: !isProduction, runtime: "automatic" }},
+      ],
+      {}
+    ],
+  }};
+}};
+""".format(
         # Conditionally add the TypeScript preset if use_typescript is True
         '"@babel/preset-typescript",'
         if use_typescript
@@ -40,9 +39,8 @@ def create_babel_config(use_typescript=False):
             f.write(config)
         print("Successfully created babel.config.js")
 
-    except PermissionError as pe:
-        print(f"Error: {pe}")
-    except OSError as e:
-        print(f"OS error: {e}")
+    except (PermissionError, OSError) as e:
+        print(f"Error: {e}")
+        raise
     except Exception as e:
         print(f"An unexpected error occurred: {e}")

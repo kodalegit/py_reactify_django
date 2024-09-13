@@ -15,28 +15,27 @@ class TestCreateBabelConfig(unittest.TestCase):
         mock_open.assert_called_with("babel.config.js", "w")
 
         # Check if the file content written matches the expected Babel config with TypeScript
-        expected_config = """
-        module.exports = (api) => {
-          // This caches the Babel config
-          api.cache.using(() => process.env.NODE_ENV);
+        expected_config = """\
+module.exports = (api) => {
+  // This caches the Babel config
+  api.cache.using(() => process.env.NODE_ENV);
 
-          const isProduction = api.env("production");
+  const isProduction = api.env("production");
 
-          return {{
-            presets: [
-              "@babel/preset-env",
-              // Enable development transform of React with new automatic runtime
-              [
-                "@babel/preset-react",
-                {{ development: !isProduction, runtime: "automatic" }},
-              ],
-              // Add @babel/preset-typescript conditionally if use_typescript is true
-              "@babel/preset-typescript",
-            ],
-          }};
-        };
-        """
-        mock_open().write.assert_called_once_with(expected_config.strip())
+  return {
+    presets: [
+      "@babel/preset-env",
+      // Enable development transform of React with new automatic runtime
+      [
+        "@babel/preset-react",
+        { development: !isProduction, runtime: "automatic" },
+      ],
+      "@babel/preset-typescript",
+    ],
+  };
+};
+"""
+        mock_open().write.assert_called_once_with(expected_config)
 
     @patch("builtins.open", new_callable=mock_open)
     @patch("os.access", return_value=True)  # Simulate writable directory
@@ -48,37 +47,36 @@ class TestCreateBabelConfig(unittest.TestCase):
         mock_open.assert_called_with("babel.config.js", "w")
 
         # Check if the file content written matches the expected Babel config without TypeScript
-        expected_config = """
-        module.exports = (api) => {
-          // This caches the Babel config
-          api.cache.using(() => process.env.NODE_ENV);
+        expected_config = """\
+module.exports = (api) => {
+  // This caches the Babel config
+  api.cache.using(() => process.env.NODE_ENV);
 
-          const isProduction = api.env("production");
+  const isProduction = api.env("production");
 
-          return {{
-            presets: [
-              "@babel/preset-env",
-              // Enable development transform of React with new automatic runtime
-              [
-                "@babel/preset-react",
-                {{ development: !isProduction, runtime: "automatic" }},
-              ],
-              // Add @babel/preset-typescript conditionally if use_typescript is true
-            ],
-          }};
-        };
-        """
-        mock_open().write.assert_called_once_with(expected_config.strip())
+  return {
+    presets: [
+      "@babel/preset-env",
+      // Enable development transform of React with new automatic runtime
+      [
+        "@babel/preset-react",
+        { development: !isProduction, runtime: "automatic" },
+      ],
+      
+    ],
+  };
+};
+"""
+        mock_open().write.assert_called_once_with(expected_config)
 
     @patch("os.access", return_value=False)  # Simulate non-writable directory
     def test_permission_error(self, mock_access):
         with self.assertRaises(PermissionError):
             create_babel_config()
 
-    @patch("builtins.open", new_callable=mock_open)
     @patch("os.access", return_value=True)  # Simulate writable directory
     @patch("builtins.open", side_effect=OSError("OS error"))
-    def test_os_error(self, mock_open, mock_access, mock_open_side_effect):
+    def test_os_error(self, mock_access, mock_open_side_effect):
         with self.assertRaises(OSError):
             create_babel_config()
 

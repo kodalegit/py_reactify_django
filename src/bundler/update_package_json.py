@@ -28,9 +28,12 @@ def update_package_json_scripts():
 
     except FileNotFoundError as fnfe:
         print(f"Error: {fnfe}")
+        raise
     except json.JSONDecodeError as jde:
         print(f"Error decoding JSON: {jde}")
+        raise
     except IOError as ioe:
         print(f"IO error: {ioe}")
+        raise
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
