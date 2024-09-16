@@ -1,56 +1,55 @@
 import unittest
-from unittest.mock import mock_open, patch, call
+from unittest.mock import mock_open, patch
 import json
 from src.bundler.update_package_json import update_package_json_scripts
 
 
 class TestUpdatePackageJsonScripts(unittest.TestCase):
 
-    @patch("builtins.open", new_callable=mock_open, read_data="{}")
+    @patch("builtins.open", new_callable=mock_open, read_data='{"scripts": {}}')
     @patch("os.path.isfile", return_value=True)
-    def test_update_package_json_scripts_success(self, mock_isfile, mock_open):
-        # Simulate the package.json file being correctly updated
+    def test_successful_update(self, mock_isfile, mock_open_file):
+        # Call the function
         update_package_json_scripts()
 
-        # Check if the file was opened in write mode
-        mock_open.assert_called_with("package.json", "w")
+        # Expected data after the update
+        expected_data = {
+            "scripts": {
+                "start": "webpack serve",
+                "build": "webpack --mode production",
+            }
+        }
+        expected_json = json.dumps(expected_data, indent=2)
 
-        # Define the expected series of write calls for the pretty-printed JSON
-        expected_calls = [
-            call("{"),
-            call("\n  "),
-            call('"scripts"'),
-            call(": "),
-            call("{"),
-            call("\n    "),
-            call('"start"'),
-            call(": "),
-            call('"webpack serve"'),
-            call(",\n    "),
-            call('"build"'),
-            call(": "),
-            call('"webpack --mode production"'),
-            call("\n  "),
-            call("}"),
-            call("\n"),
-            call("}"),
-        ]
-        mock_open().write.assert_has_calls(expected_calls, any_order=False)
+        # Check that the file was opened twice (once for reading, once for writing)
+        mock_open_file.assert_any_call("package.json", "r")
+        mock_open_file.assert_any_call("package.json", "w")
+
+        # Get the handle used for writing
+        handle = mock_open_file()
+        # Read all calls to the write method
+        written_data = "".join(call[0][0] for call in handle.write.call_args_list)
+
+        # Assert that the data written matches the expected JSON
+        self.assertEqual(written_data.strip(), expected_json)
 
     @patch("os.path.isfile", return_value=False)
     def test_file_not_found(self, mock_isfile):
+        # Ensure the function raises a FileNotFoundError
         with self.assertRaises(FileNotFoundError):
             update_package_json_scripts()
 
-    @patch("builtins.open", new_callable=mock_open, read_data="{invalid_json")
+    @patch("builtins.open", new_callable=mock_open, read_data="invalid json")
     @patch("os.path.isfile", return_value=True)
-    def test_json_decode_error(self, mock_isfile, mock_open):
+    def test_json_decode_error(self, mock_isfile, mock_open_file):
+        # Ensure the function raises a JSONDecodeError
         with self.assertRaises(json.JSONDecodeError):
             update_package_json_scripts()
 
+    @patch("builtins.open", side_effect=IOError("IO error occurred"))
     @patch("os.path.isfile", return_value=True)
-    @patch("builtins.open", side_effect=IOError("File I/O error"))
-    def test_io_error(self, mock_open_side_effect, mock_isfile):
+    def test_io_error(self, mock_isfile, mock_open_file):
+        # Ensure the function raises an IOError
         with self.assertRaises(IOError):
             update_package_json_scripts()
 

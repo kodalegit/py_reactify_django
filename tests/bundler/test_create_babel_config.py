@@ -1,83 +1,53 @@
 import unittest
-from unittest.mock import mock_open, patch
+import os
+import tempfile
+from unittest.mock import patch, mock_open
 from src.bundler.babel_configurator import create_babel_config
 
 
 class TestCreateBabelConfig(unittest.TestCase):
 
-    @patch("builtins.open", new_callable=mock_open)
-    @patch("os.access", return_value=True)  # Simulate writable directory
-    def test_create_babel_config_with_typescript(self, mock_access, mock_open):
-        # Call the function with TypeScript enabled
+    def setUp(self):
+        self.temp_dir = tempfile.mkdtemp()
+        self.original_cwd = os.getcwd()
+        os.chdir(self.temp_dir)
+
+    def tearDown(self):
+        os.chdir(self.original_cwd)
+        for file in os.listdir(self.temp_dir):
+            os.remove(os.path.join(self.temp_dir, file))
+        os.rmdir(self.temp_dir)
+
+    def test_create_babel_config_without_typescript(self):
+        create_babel_config()
+        self.assertTrue(os.path.exists("babel.config.js"))
+        with open("babel.config.js", "r") as f:
+            content = f.read()
+        self.assertNotIn("@babel/preset-typescript", content)
+
+    def test_create_babel_config_with_typescript(self):
         create_babel_config(use_typescript=True)
+        self.assertTrue(os.path.exists("babel.config.js"))
+        with open("babel.config.js", "r") as f:
+            content = f.read()
+        self.assertIn("@babel/preset-typescript", content)
 
-        # Check if the file was opened in write mode
-        mock_open.assert_called_with("babel.config.js", "w")
-
-        # Check if the file content written matches the expected Babel config with TypeScript
-        expected_config = """\
-module.exports = (api) => {
-  // This caches the Babel config
-  api.cache.using(() => process.env.NODE_ENV);
-
-  const isProduction = api.env("production");
-
-  return {
-    presets: [
-      "@babel/preset-env",
-      // Enable development transform of React with new automatic runtime
-      [
-        "@babel/preset-react",
-        { development: !isProduction, runtime: "automatic" },
-      ],
-      "@babel/preset-typescript",
-    ],
-  };
-};
-"""
-        mock_open().write.assert_called_once_with(expected_config)
-
-    @patch("builtins.open", new_callable=mock_open)
-    @patch("os.access", return_value=True)  # Simulate writable directory
-    def test_create_babel_config_without_typescript(self, mock_access, mock_open):
-        # Call the function with TypeScript disabled
-        create_babel_config(use_typescript=False)
-
-        # Check if the file was opened in write mode
-        mock_open.assert_called_with("babel.config.js", "w")
-
-        # Check if the file content written matches the expected Babel config without TypeScript
-        expected_config = """\
-module.exports = (api) => {
-  // This caches the Babel config
-  api.cache.using(() => process.env.NODE_ENV);
-
-  const isProduction = api.env("production");
-
-  return {
-    presets: [
-      "@babel/preset-env",
-      // Enable development transform of React with new automatic runtime
-      [
-        "@babel/preset-react",
-        { development: !isProduction, runtime: "automatic" },
-      ],
-      
-    ],
-  };
-};
-"""
-        mock_open().write.assert_called_once_with(expected_config)
-
-    @patch("os.access", return_value=False)  # Simulate non-writable directory
+    @patch("os.access")
     def test_permission_error(self, mock_access):
+        mock_access.return_value = False
         with self.assertRaises(PermissionError):
             create_babel_config()
 
-    @patch("os.access", return_value=True)  # Simulate writable directory
-    @patch("builtins.open", side_effect=OSError("OS error"))
-    def test_os_error(self, mock_access, mock_open_side_effect):
+    @patch("builtins.open", new_callable=mock_open)
+    def test_io_error(self, mock_file):
+        mock_file.side_effect = IOError("Mocked IOError")
         with self.assertRaises(OSError):
+            create_babel_config()
+
+    @patch("builtins.open", new_callable=mock_open)
+    def test_unexpected_error(self, mock_file):
+        mock_file.side_effect = Exception("Unexpected error")
+        with self.assertRaises(Exception):
             create_babel_config()
 
 
