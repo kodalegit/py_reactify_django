@@ -31,7 +31,7 @@ class TestUpdatePackageJsonScripts(unittest.TestCase):
         written_data = "".join(call[0][0] for call in handle.write.call_args_list)
 
         # Assert that the data written matches the expected JSON
-        self.assertEqual(written_data.strip(), expected_json)
+        self.assertEqual(written_data, expected_json)
 
     @patch("os.path.isfile", return_value=False)
     def test_file_not_found(self, mock_isfile):
