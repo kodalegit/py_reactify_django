@@ -19,7 +19,7 @@ def configure_django(project_name, app_name):
         print("Error: 'django-admin' command not found.")
         print("Ensure Django is installed and added to your system's PATH.")
         print("You can try running 'python -m django' instead.")
-        sys.exit(1)
+        raise
     except subprocess.CalledProcessError as e:
         # Handle other errors in running django-admin (permissions, etc.)
         if "permission denied" in str(e):
@@ -28,7 +28,7 @@ def configure_django(project_name, app_name):
             print("  sudo chmod +x $(which django-admin)")
         else:
             print(f"An error occurred while creating the Django project: {e}")
-        sys.exit(1)
+        raise
 
     # Navigate into the project directory
     os.chdir(project_name)
@@ -38,15 +38,15 @@ def configure_django(project_name, app_name):
         subprocess.run(["django-admin", "startapp", app_name], check=True)
     except FileNotFoundError:
         print("Error: 'django-admin' command not found.")
-        sys.exit(1)
+        raise
     except subprocess.CalledProcessError as e:
         print(f"An error occurred while creating the Django app: {e}")
-        sys.exit(1)
+        raise
 
     # Modify Django settings to include app name
     add_app_django_settings(project_name, app_name)
 
     # Add custom react root template tag
-    create_template_tag()
+    create_template_tag(app_name)
 
     create_gitignore()

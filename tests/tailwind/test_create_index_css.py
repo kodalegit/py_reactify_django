@@ -1,6 +1,5 @@
 import unittest
 from unittest import mock
-import os
 from src.tailwind.index_css import write_tailwind_css
 
 
