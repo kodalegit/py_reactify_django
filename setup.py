@@ -19,7 +19,7 @@ setup(
     description="CLI tool to configure React and TypeScript in Django",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/kodalegit/react-in-django",
+    url="https://github.com/kodalegit/reactify-django",
     author="Victor Kimani",
     author_email="victorkimani77@gmail.com",
     license="MIT",
