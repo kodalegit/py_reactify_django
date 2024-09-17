@@ -1,24 +1,19 @@
 import unittest
-from unittest import mock
-import subprocess
+from unittest.mock import patch, call
 from src.packages.install_npm_packages import install_npm_packages
+import subprocess
 
 
 class TestInstallNpmPackages(unittest.TestCase):
 
-    @mock.patch("subprocess.run")
-    def test_install_npm_packages(self, mock_subprocess_run):
-        # Setup mocks
-        mock_subprocess_run.return_value = mock.Mock(returncode=0)
-
-        # Call the function with use_typescript and use_tailwind set to True
+    @patch("subprocess.run")
+    def test_install_npm_packages_typescript_tailwind(self, mock_run):
         install_npm_packages(use_typescript=True, use_tailwind=True)
 
-        # Check that subprocess.run was called with the correct commands
-        calls = [
-            mock.call(["npm", "init", "-y"], check=True),
-            mock.call(["npm", "install", "react", "react-dom"], check=True),
-            mock.call(
+        expected_calls = [
+            call(["npm", "init", "-y"], check=True),
+            call(["npm", "install", "react", "react-dom"], check=True),
+            call(
                 [
                     "npm",
                     "install",
@@ -35,11 +30,15 @@ class TestInstallNpmPackages(unittest.TestCase):
                     "style-loader",
                     "css-loader",
                     "postcss-loader",
+                    "eslint",
+                    "eslint-plugin-react",
                     "typescript",
                     "@types/react",
                     "@types/react-dom",
                     "ts-loader",
                     "@babel/preset-typescript",
+                    "@typescript-eslint/eslint-plugin",
+                    "@typescript-eslint/parser",
                     "tailwindcss",
                     "postcss",
                     "autoprefixer",
@@ -48,31 +47,17 @@ class TestInstallNpmPackages(unittest.TestCase):
             ),
         ]
 
-        mock_subprocess_run.assert_has_calls(calls)
+        mock_run.assert_has_calls(expected_calls, any_order=False)
+        self.assertEqual(mock_run.call_count, 3)
 
-    @mock.patch("subprocess.run")
-    def test_install_npm_packages_failure(self, mock_subprocess_run):
-        mock_subprocess_run.side_effect = subprocess.CalledProcessError(1, "npm")
-
-        # Test the case where subprocess.run raises CalledProcessError
-        with self.assertRaises(subprocess.CalledProcessError):
-            install_npm_packages(use_typescript=False, use_tailwind=False)
-
-    @mock.patch("subprocess.run")
-    def test_install_npm_packages_without_typescript_or_tailwind(
-        self, mock_subprocess_run
-    ):
-        # Setup mocks
-        mock_subprocess_run.return_value = mock.Mock(returncode=0)
-
-        # Call the function with use_typescript and use_tailwind set to False
+    @patch("subprocess.run")
+    def test_install_npm_packages_no_typescript_no_tailwind(self, mock_run):
         install_npm_packages(use_typescript=False, use_tailwind=False)
 
-        # Check that subprocess.run was called with the correct commands
-        calls = [
-            mock.call(["npm", "init", "-y"], check=True),
-            mock.call(["npm", "install", "react", "react-dom"], check=True),
-            mock.call(
+        expected_calls = [
+            call(["npm", "init", "-y"], check=True),
+            call(["npm", "install", "react", "react-dom"], check=True),
+            call(
                 [
                     "npm",
                     "install",
@@ -89,12 +74,22 @@ class TestInstallNpmPackages(unittest.TestCase):
                     "style-loader",
                     "css-loader",
                     "postcss-loader",
+                    "eslint",
+                    "eslint-plugin-react",
                 ],
                 check=True,
             ),
         ]
 
-        mock_subprocess_run.assert_has_calls(calls)
+        mock_run.assert_has_calls(expected_calls, any_order=False)
+        self.assertEqual(mock_run.call_count, 3)
+
+    @patch("subprocess.run")
+    def test_install_npm_packages_error(self, mock_run):
+        mock_run.side_effect = subprocess.CalledProcessError(1, "npm install")
+
+        with self.assertRaises(subprocess.CalledProcessError):
+            install_npm_packages(use_typescript=False, use_tailwind=False)
 
 
 if __name__ == "__main__":
