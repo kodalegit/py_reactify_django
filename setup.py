@@ -5,9 +5,7 @@ setup(
     version="0.1.0",
     packages=find_packages(),
     install_requires=[
-        "Django>=3.0",
-        "click",
-        # Add any other dependencies here
+        "click==8.1.7",
     ],
     entry_points={
         "console_scripts": [
