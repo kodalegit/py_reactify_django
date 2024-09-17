@@ -5,7 +5,10 @@ setup(
     version="0.1.0",
     packages=find_packages(),
     install_requires=[
-        "click==8.1.7",
+        "typer>=0.12.5",  # Typer for CLI creation
+        "rich>=13.8.1",  # Rich for styled console output
+        "tqdm>=4.66.5",  # tqdm for progress bars
+        "questionary>=2.0.1",  # Questionary for interactive prompts
     ],
     entry_points={
         "console_scripts": [
