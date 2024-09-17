@@ -1,6 +1,5 @@
 import os
 import subprocess
-import sys
 from .django.template_tag_creator import create_template_tag
 from .django.modify_django_settings import add_app_django_settings
 from .django.check_and_install_django import check_and_install_django
