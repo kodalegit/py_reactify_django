@@ -1,6 +1,5 @@
 import unittest
 from unittest import mock
-import os
 from src.react_configurator import configure_react
 
 

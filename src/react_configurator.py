@@ -1,5 +1,5 @@
 import os
-from .react.install_npm_packages import install_npm_packages
+from .packages.install_npm_packages import install_npm_packages
 
 
 def configure_react(app_name, use_typescript, use_tailwind):
