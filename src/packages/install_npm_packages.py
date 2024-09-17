@@ -26,6 +26,8 @@ def install_npm_packages(use_typescript, use_tailwind):
             "style-loader",
             "css-loader",
             "postcss-loader",
+            "eslint",
+            "eslint-plugin-react",
         ]
 
         # If TypeScript is used, add TypeScript-related packages
@@ -37,6 +39,8 @@ def install_npm_packages(use_typescript, use_tailwind):
                     "@types/react-dom",
                     "ts-loader",
                     "@babel/preset-typescript",
+                    "@typescript-eslint/eslint-plugin",
+                    "@typescript-eslint/parser",
                 ]
             )
         if use_tailwind:

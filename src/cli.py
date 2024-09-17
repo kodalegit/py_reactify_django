@@ -4,6 +4,7 @@ from .react_configurator import configure_react
 from .bundler_configurator import configure_bundling
 from .typescript_configurator import configure_typescript
 from .tailwind_configurator import configure_tailwind
+from .eslint_configurator import configure_eslint
 
 
 @click.command()
@@ -30,6 +31,7 @@ from .tailwind_configurator import configure_tailwind
 def setup_django_react(project_name, app_name, use_typescript, use_tailwind):
     configure_django(project_name, app_name, use_typescript)
     configure_react(app_name, use_typescript, use_tailwind)
+    configure_eslint(use_typescript)
     configure_bundling(app_name, use_typescript)
     configure_typescript(use_typescript)
 
