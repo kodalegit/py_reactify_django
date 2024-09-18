@@ -3,7 +3,7 @@ from .packages.install_npm_packages import install_npm_packages
 
 
 def configure_react(app_name, use_typescript, use_tailwind):
-    # Navigate to app directory
+    # Navigate to app directory as
     os.chdir(app_name)
 
     # Initialize npm and install packages
