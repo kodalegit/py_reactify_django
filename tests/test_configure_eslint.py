@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, mock_open
-from src.eslint_configurator import configure_eslint
+from src.reactify_django.eslint_configurator import configure_eslint
 
 
 class TestConfigureEslint(unittest.TestCase):

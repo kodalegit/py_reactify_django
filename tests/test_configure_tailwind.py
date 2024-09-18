@@ -1,13 +1,13 @@
 import unittest
 from unittest import mock
-from src.tailwind_configurator import configure_tailwind
+from src.reactify_django.tailwind_configurator import configure_tailwind
 
 
 class TestConfigureTailwind(unittest.TestCase):
 
-    @mock.patch("src.tailwind_configurator.write_tailwind_css")
-    @mock.patch("src.tailwind_configurator.create_postcss_config")
-    @mock.patch("src.tailwind_configurator.create_tailwind_config")
+    @mock.patch("src.reactify_django.tailwind_configurator.write_tailwind_css")
+    @mock.patch("src.reactify_django.tailwind_configurator.create_postcss_config")
+    @mock.patch("src.reactify_django.tailwind_configurator.create_tailwind_config")
     def test_configure_tailwind(
         self,
         mock_create_tailwind_config,

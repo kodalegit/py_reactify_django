@@ -1,7 +1,7 @@
 from unittest import mock
 import unittest
 import json
-from src.typescript.generate_tsconfig import generate_tsconfig
+from src.reactify_django.typescript.generate_tsconfig import generate_tsconfig
 
 
 class TestGenerateTsconfig(unittest.TestCase):

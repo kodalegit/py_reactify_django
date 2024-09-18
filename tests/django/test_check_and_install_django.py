@@ -1,12 +1,12 @@
 import unittest
 from unittest import mock
 import subprocess
-from src.django.check_and_install_django import check_and_install_django
+from src.reactify_django.django.check_and_install_django import check_and_install_django
 
 
 class TestCheckAndInstallDjango(unittest.TestCase):
 
-    @mock.patch("src.django.check_and_install_django.subprocess.run")
+    @mock.patch("src.reactify_django.django.check_and_install_django.subprocess.run")
     def test_django_installed(self, mock_subprocess_run):
         # Simulate that Django is already installed
         mock_subprocess_run.return_value = mock.Mock(returncode=0)
@@ -17,7 +17,7 @@ class TestCheckAndInstallDjango(unittest.TestCase):
             # Check that the correct message is printed when Django is installed
             mocked_print.assert_called_once_with("Django is already installed.")
 
-    @mock.patch("src.django.check_and_install_django.subprocess.run")
+    @mock.patch("src.reactify_django.django.check_and_install_django.subprocess.run")
     def test_django_not_installed(self, mock_subprocess_run):
         # Simulate that Django is not installed
         mock_subprocess_run.side_effect = [

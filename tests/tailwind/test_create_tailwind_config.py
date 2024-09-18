@@ -1,6 +1,6 @@
 import unittest
 from unittest import mock
-from src.tailwind.tailwind_config import create_tailwind_config
+from src.reactify_django.tailwind.tailwind_config import create_tailwind_config
 
 
 class TestCreateTailwindConfig(unittest.TestCase):

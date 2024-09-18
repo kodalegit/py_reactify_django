@@ -2,7 +2,7 @@ import unittest
 import os
 import tempfile
 from unittest.mock import patch, mock_open
-from src.bundler.babel_configurator import create_babel_config
+from src.reactify_django.bundler.babel_configurator import create_babel_config
 
 
 class TestCreateBabelConfig(unittest.TestCase):

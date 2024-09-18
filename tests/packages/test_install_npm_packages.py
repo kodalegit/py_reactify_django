@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, call
-from src.packages.install_npm_packages import install_npm_packages
+from src.reactify_django.packages.install_npm_packages import install_npm_packages
 import subprocess
 
 

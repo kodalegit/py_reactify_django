@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import mock_open, patch
 import json
-from src.bundler.update_package_json import update_package_json_scripts
+from src.reactify_django.bundler.update_package_json import update_package_json_scripts
 
 
 class TestUpdatePackageJsonScripts(unittest.TestCase):

@@ -1,7 +1,7 @@
 import unittest
 from unittest import mock
 import os
-from src.django_configurator import add_app_django_settings
+from src.reactify_django.django_configurator import add_app_django_settings
 
 
 class TestAddAppDjangoSettings(unittest.TestCase):

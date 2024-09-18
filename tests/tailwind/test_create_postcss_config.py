@@ -1,6 +1,6 @@
 import unittest
 from unittest import mock
-from src.tailwind.postcss_config import create_postcss_config
+from src.reactify_django.tailwind.postcss_config import create_postcss_config
 
 
 class TestCreatePostCSSConfig(unittest.TestCase):

@@ -12,7 +12,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "reactify-django=src.cli:setup_django_react",
+            "reactify-django=src.reactify_django.cli:setup_django_react",
         ],
     },
     include_package_data=True,

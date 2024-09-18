@@ -1,11 +1,11 @@
 import unittest
 from unittest import mock
-from src.typescript_configurator import configure_typescript
+from src.reactify_django.typescript_configurator import configure_typescript
 
 
 class TestConfigureTypescript(unittest.TestCase):
 
-    @mock.patch("src.typescript_configurator.generate_tsconfig")
+    @mock.patch("src.reactify_django.typescript_configurator.generate_tsconfig")
     def test_configure_typescript_called(self, mock_generate_tsconfig):
         # Test when use_typescript is True
         use_typescript = True
@@ -16,7 +16,7 @@ class TestConfigureTypescript(unittest.TestCase):
         # Check that generate_tsconfig is called once
         mock_generate_tsconfig.assert_called_once()
 
-    @mock.patch("src.typescript_configurator.generate_tsconfig")
+    @mock.patch("src.reactify_django.typescript_configurator.generate_tsconfig")
     def test_configure_typescript_not_called(self, mock_generate_tsconfig):
         # Test when use_typescript is False
         use_typescript = False

@@ -1,17 +1,17 @@
 import unittest
 from unittest.mock import patch, call
 import subprocess
-from src.django_configurator import configure_django
+from src.reactify_django.django_configurator import configure_django
 
 
 class TestConfigureDjango(unittest.TestCase):
 
-    @patch("src.django_configurator.check_and_install_django")
-    @patch("src.django_configurator.subprocess.run")
-    @patch("src.django_configurator.os.chdir")
-    @patch("src.django_configurator.add_app_django_settings")
-    @patch("src.django_configurator.create_template_tag")
-    @patch("src.django_configurator.create_gitignore")
+    @patch("src.reactify_django.django_configurator.check_and_install_django")
+    @patch("src.reactify_django.django_configurator.subprocess.run")
+    @patch("src.reactify_django.django_configurator.os.chdir")
+    @patch("src.reactify_django.django_configurator.add_app_django_settings")
+    @patch("src.reactify_django.django_configurator.create_template_tag")
+    @patch("src.reactify_django.django_configurator.create_gitignore")
     def test_configure_django_success(
         self,
         mock_create_gitignore,
@@ -41,12 +41,12 @@ class TestConfigureDjango(unittest.TestCase):
         mock_create_template_tag.assert_called_once_with("myapp")
         mock_create_gitignore.assert_called_once()
 
-    @patch("src.django_configurator.check_and_install_django")
-    @patch("src.django_configurator.subprocess.run")
-    @patch("src.django_configurator.os.chdir")
-    @patch("src.django_configurator.add_app_django_settings")
-    @patch("src.django_configurator.create_template_tag")
-    @patch("src.django_configurator.create_gitignore")
+    @patch("src.reactify_django.django_configurator.check_and_install_django")
+    @patch("src.reactify_django.django_configurator.subprocess.run")
+    @patch("src.reactify_django.django_configurator.os.chdir")
+    @patch("src.reactify_django.django_configurator.add_app_django_settings")
+    @patch("src.reactify_django.django_configurator.create_template_tag")
+    @patch("src.reactify_django.django_configurator.create_gitignore")
     def test_django_admin_not_found(
         self,
         mock_create_gitignore,
@@ -68,12 +68,12 @@ class TestConfigureDjango(unittest.TestCase):
             ]
         )
 
-    @patch("src.django_configurator.check_and_install_django")
-    @patch("src.django_configurator.subprocess.run")
-    @patch("src.django_configurator.os.chdir")
-    @patch("src.django_configurator.add_app_django_settings")
-    @patch("src.django_configurator.create_template_tag")
-    @patch("src.django_configurator.create_gitignore")
+    @patch("src.reactify_django.django_configurator.check_and_install_django")
+    @patch("src.reactify_django.django_configurator.subprocess.run")
+    @patch("src.reactify_django.django_configurator.os.chdir")
+    @patch("src.reactify_django.django_configurator.add_app_django_settings")
+    @patch("src.reactify_django.django_configurator.create_template_tag")
+    @patch("src.reactify_django.django_configurator.create_gitignore")
     def test_subprocess_called_process_error(
         self,
         mock_create_gitignore,
@@ -95,12 +95,12 @@ class TestConfigureDjango(unittest.TestCase):
             ]
         )
 
-    @patch("src.django_configurator.check_and_install_django")
-    @patch("src.django_configurator.subprocess.run")
-    @patch("src.django_configurator.os.chdir")
-    @patch("src.django_configurator.add_app_django_settings")
-    @patch("src.django_configurator.create_template_tag")
-    @patch("src.django_configurator.create_gitignore")
+    @patch("src.reactify_django.django_configurator.check_and_install_django")
+    @patch("src.reactify_django.django_configurator.subprocess.run")
+    @patch("src.reactify_django.django_configurator.os.chdir")
+    @patch("src.reactify_django.django_configurator.add_app_django_settings")
+    @patch("src.reactify_django.django_configurator.create_template_tag")
+    @patch("src.reactify_django.django_configurator.create_gitignore")
     def test_permission_error(
         self,
         mock_create_gitignore,

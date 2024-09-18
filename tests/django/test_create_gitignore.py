@@ -1,6 +1,6 @@
 import unittest
 from unittest import mock
-from src.django.create_gitignore import create_gitignore
+from src.reactify_django.django.create_gitignore import create_gitignore
 
 
 class TestCreateGitignore(unittest.TestCase):

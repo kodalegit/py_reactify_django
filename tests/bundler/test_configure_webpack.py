@@ -3,7 +3,7 @@ import os
 import tempfile
 from unittest.mock import patch
 from io import StringIO
-from src.bundler.webpack_configurator import create_webpack_config
+from src.reactify_django.bundler.webpack_configurator import create_webpack_config
 
 
 class TestCreateWebpackConfig(unittest.TestCase):

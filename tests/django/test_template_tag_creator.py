@@ -1,11 +1,11 @@
 import unittest
 from unittest.mock import mock_open, patch
-from src.django.template_tag_creator import create_template_tag
+from src.reactify_django.django.template_tag_creator import create_template_tag
 
 
 class TestCreateTemplateTag(unittest.TestCase):
 
-    @patch("src.django_configurator.os.makedirs")
+    @patch("src.reactify_django.django_configurator.os.makedirs")
     @patch("builtins.open", new_callable=mock_open)
     def test_create_template_tag(self, mock_open, mock_makedirs):
         app_name = "myapp"

@@ -1,6 +1,6 @@
 import unittest
 from unittest import mock
-from src.tailwind.index_css import write_tailwind_css
+from src.reactify_django.tailwind.index_css import write_tailwind_css
 
 
 class TestWriteTailwindCSS(unittest.TestCase):

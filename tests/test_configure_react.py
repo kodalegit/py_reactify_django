@@ -1,11 +1,11 @@
 import unittest
 from unittest import mock
-from src.react_configurator import configure_react
+from src.reactify_django.react_configurator import configure_react
 
 
 class TestConfigureReact(unittest.TestCase):
 
-    @mock.patch("src.react_configurator.install_npm_packages")
+    @mock.patch("src.reactify_django.react_configurator.install_npm_packages")
     @mock.patch("os.makedirs")
     @mock.patch("builtins.open", new_callable=mock.mock_open)
     @mock.patch("os.chdir")
@@ -35,7 +35,7 @@ class TestConfigureReact(unittest.TestCase):
             "import React from 'react';\nimport ReactDOM from 'react-dom';\nimport './index.css';\nReactDOM.render(<h1>Hello, React!</h1>, document.getElementById('root'));"
         )
 
-    @mock.patch("src.react_configurator.install_npm_packages")
+    @mock.patch("src.reactify_django.react_configurator.install_npm_packages")
     @mock.patch("os.makedirs")
     @mock.patch("builtins.open", new_callable=mock.mock_open)
     @mock.patch("os.chdir")
